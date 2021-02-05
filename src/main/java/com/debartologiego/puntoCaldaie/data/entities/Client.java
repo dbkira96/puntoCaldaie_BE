@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "CLIENTI")
 public class Client {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Basic(optional = false)
@@ -47,11 +47,11 @@ public class Client {
     @Column(name = "CELLULARE")
     private String cellulare;
 
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL ,orphanRemoval = true)
     @Column(nullable = true)
     private List<Stufa> stufe;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(nullable = true)
     private List<Caldaia> caldaie;
 

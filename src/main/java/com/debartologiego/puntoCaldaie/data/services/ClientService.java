@@ -13,4 +13,6 @@ public interface ClientService {
     ClientDto updateUser(ClientDto user);
 
     List<ClientDto> deleteAllClients();
+
+    ClientDto deleteClient(Long id);
 }

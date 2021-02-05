@@ -34,9 +34,24 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto addClient(ClientDto clientDto) {
         Client client= modelMapper.map(clientDto,Client.class);
+        setBackReference(client);
         return modelMapper.map(clientDao.save(client),ClientDto.class);
     }
-
+    private Client setBackReference(Client c){
+        if(c.getStufe()!=null) {
+            for (Stufa s : c.getStufe()
+            ) {
+                s.setCliente(c);
+            }
+        }
+        if(c.getCaldaie()!=null) {
+            for (Caldaia cal : c.getCaldaie()
+            ) {
+                cal.setCliente(c);
+            }
+        }
+        return c;
+    }
     @Override
     public ClientDto getClient(long id) {
         Client client =clientDao.findById(id).orElseThrow(()->new RuntimeException("Cliente non trovato"));
@@ -54,32 +69,28 @@ public class ClientServiceImpl implements ClientService {
         List<Client> clients= clientsDto.stream().map(clientDto -> modelMapper.map(clientDto,Client.class)).collect(Collectors.toList());
         for (Client c :clients
              ) {
-            if(c.getStufe()!=null) {
-                for (Stufa s : c.getStufe()
-                ) {
-                    s.setCliente(c);
-                }
-            }
-            if(c.getCaldaie()!=null) {
-                for (Caldaia cal : c.getCaldaie()
-                ) {
-                    cal.setCliente(c);
-                }
-            }
+            setBackReference(c);
         }
         clients=clientDao.saveAll(clients);
         return clients.stream().map(user->modelMapper.map(user,ClientDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public ClientDto updateUser(ClientDto user) {
-        Client client = clientDao.findById(user.getId()).orElseThrow(() -> new RuntimeException("user " + user.getNominativo() + " not found"));;
-        return modelMapper.map(clientDao.save(client),ClientDto.class);
+    public ClientDto updateUser(ClientDto clientDto) {
+        Client client = clientDao.findById(clientDto.getId()).orElseThrow(() -> new RuntimeException("user " + clientDto.getNominativo() + " not found"));
+        return addClient(clientDto);
     }
 
     @Override
     public List<ClientDto> deleteAllClients() {
-        clientDao.deleteAllInBatch();
+        clientDao.deleteAll();
         return  getClients();
+    }
+
+    @Override
+    public ClientDto deleteClient(Long id) {
+        Client client =clientDao.findById(id).orElseThrow(()->new RuntimeException("cliente non trovato"));
+        clientDao.delete(client);
+        return new ClientDto();
     }
 }

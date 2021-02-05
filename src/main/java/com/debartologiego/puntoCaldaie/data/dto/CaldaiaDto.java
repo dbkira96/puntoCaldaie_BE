@@ -69,8 +69,8 @@ public class CaldaiaDto {
         return cliente;
     }
 
-    public void setCliente(ClientDto cliente) {
-        cliente = cliente;
+    public void setCliente(ClientDto clienteDto) {
+        cliente = clienteDto;
     }
 
     public long getId() {
@@ -79,5 +79,19 @@ public class CaldaiaDto {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "CaldaiaDto{" +
+                "id=" + id +
+                ", titolo='" + titolo + '\'' +
+                ", scadenza='" + scadenza + '\'' +
+                ", scadanno='" + scadanno + '\'' +
+                ", importo='" + importo + '\'' +
+                ", annotazione='" + annotazione + '\'' +
+                ", scadbollo='" + scadbollo + '\'' +
+                ", cliente=" + cliente +
+                '}';
     }
 }

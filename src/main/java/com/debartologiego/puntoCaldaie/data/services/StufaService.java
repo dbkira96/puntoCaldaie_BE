@@ -10,4 +10,5 @@ public interface StufaService {
     List<StufaDto> getStufe();
     List<StufaDto> loadStufe(List<StufaDto> Stufe);
     StufaDto updateStufa(StufaDto stufa);
+    StufaDto deleteStufa(Long id);
 }

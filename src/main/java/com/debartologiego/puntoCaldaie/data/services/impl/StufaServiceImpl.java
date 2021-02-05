@@ -20,11 +20,15 @@ public class StufaServiceImpl implements StufaService {
     private StufaDao stufaDao;
 
     @Autowired
+    private ClientDao clientDao;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
     public StufaDto addStufa(StufaDto stufaDto) {
         Stufa stufa = modelMapper.map(stufaDto,Stufa.class);
+        stufa.setCliente(clientDao.findById(stufaDto.getCliente().getId()).orElseThrow(()->new RuntimeException("utente non trovato")));
         return modelMapper.map(stufaDao.save(stufa),StufaDto.class);
     }
 
@@ -37,7 +41,14 @@ public class StufaServiceImpl implements StufaService {
     @Override
     public List<StufaDto> getStufe() {
         List<Stufa> stufe = stufaDao.findAll();
-        return stufe.stream().map(stufa -> modelMapper.map(stufa,StufaDto.class)).collect(Collectors.toList());
+        return stufe.stream().map(stufa -> {
+            StufaDto stufaDto= modelMapper.map(stufa,StufaDto.class);
+            ClientDto client=modelMapper.map(stufa.getCliente(),ClientDto.class);
+            client.setStufe(null);
+            client.setCaldaie(null);
+            stufaDto.setCliente(client);
+            return stufaDto;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -48,10 +59,27 @@ public class StufaServiceImpl implements StufaService {
 
     @Override
     public StufaDto updateStufa(StufaDto stufaDto) {
-        if (stufaDao.existsById(stufaDto.getId()))  return addStufa(stufaDto);
-        else  return  new StufaDto();
+        /*
+        *  Stufa stufa = modelMapper.map(stufaDto,Stufa.class);
+        Stufa old=stufaDao.findById(stufa.getId()).orElseThrow(()->new RuntimeException("Stufa non trovata"));
+        stufa.setCliente(old.getCliente());
+        return modelMapper.map(stufaDao.save(stufa),StufaDto.class);*/
+        Stufa stufa=modelMapper.map(stufaDto,Stufa.class);
+        Stufa old=stufaDao.findById(stufa.getId()).orElseThrow(()->new RuntimeException("Stufa non trovata"));
+        stufa.setCliente(old.getCliente());
+        return modelMapper.map(stufaDao.save(stufa),StufaDto.class);
     }
 
-    
+    /*
+    * public StufaDto deleteStufa(Long id) {
+        Stufa stufa= stufaDao.findById(id).orElseThrow(()->new RuntimeException("Stufa non trovata"));
+        stufaDao.delete(stufa);
+        return new StufaDto();
+    }*/
+    public StufaDto deleteStufa(Long id) {
+        Stufa stufa = stufaDao.findById(id).orElseThrow(() -> new RuntimeException("Stufa non trovata"));
+        stufaDao.delete(stufa);
+        return new StufaDto();
+    }
 
 }

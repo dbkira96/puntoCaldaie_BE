@@ -59,8 +59,8 @@ public class StufaDto {
         return cliente;
     }
 
-    public void setCliente(ClientDto cliente) {
-        cliente = cliente;
+    public void setCliente(ClientDto clienteDto) {
+        cliente = clienteDto;
     }
 
     public long getId() {

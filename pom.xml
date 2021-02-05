@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.debartologiego</groupId>
 	<artifactId>puntoCaldaie</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>puntoCaldaie</name>
 	<description>project for punto caldaie</description>
 
@@ -73,14 +73,23 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.5</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.awaitility</groupId>
+			<artifactId>awaitility</artifactId>
+			<version>3.1.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
 
 	<build>
 		<plugins>

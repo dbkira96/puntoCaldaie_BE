@@ -41,5 +41,9 @@ public class StufaController {
     public ResponseEntity<List<StufaDto>> loadStufe(@RequestBody List<StufaDto> usersDto){
         return ResponseEntity.ok(stufaService.loadStufe(usersDto));
     }
-
+    @DeleteMapping("/stufe/delete")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<StufaDto> delete(@RequestParam(name="id",defaultValue = "0") Long id) {
+        return ResponseEntity.ok(stufaService.deleteStufa(id));
+    }
 }

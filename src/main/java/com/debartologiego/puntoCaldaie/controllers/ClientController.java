@@ -21,6 +21,11 @@ public class ClientController {
     public ResponseEntity<ClientDto> get(@RequestParam(name="id",defaultValue = "0") Long id){
         return ResponseEntity.ok(clientservice.getClient(id));
     }
+    @DeleteMapping("/clienti/delete")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public ResponseEntity<ClientDto> delete(@RequestParam(name="id",defaultValue = "0") Long id){
+        return ResponseEntity.ok(clientservice.deleteClient(id));
+    }
     @GetMapping("/clienti/getAll")
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<List<ClientDto>> all(){
@@ -34,6 +39,7 @@ public class ClientController {
     @PostMapping("/clienti/add")
     @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<ClientDto> addUser(@RequestBody ClientDto userDto){
+
         return ResponseEntity.ok(clientservice.addClient(userDto));
     }
     @PostMapping("/clienti/addAll")
